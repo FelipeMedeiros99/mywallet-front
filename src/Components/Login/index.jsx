@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { useState } from "react"
+import axios from "axios"
 
 import { manipuladorDeInput } from "../../utils/ferramentas"
-import executarRequisicao from "../../utils/requisicoes"
 
 
 // LEVAR PARA A PÁGINA PRINCIPAL CASO A ENTRADA SEJA VÁLIDA
@@ -13,14 +13,9 @@ import executarRequisicao from "../../utils/requisicoes"
  */
 export default function Login({ }) {
     const [loginInputs, setLoginInputs] = useState({ "E-mail": "", "Senha": "" })
+    const [mensagemDeErro, setMensagemDeErro] = useState({'ativa': false, 'erro': ""})
     const indicesTipos = ['email', 'password']
     const minimosRequeridos = ["7", "6"]
-
-    async function subimissao(evento){
-        evento.preventDefault()
-        const dados = await executarRequisicao("login", 'post', loginInputs, "Não foi possível efetuar login")
-        console.log(dados?.data)
-    }
 
 
     function renderInputs(titulo, indice){
@@ -37,21 +32,43 @@ export default function Login({ }) {
         )
     }
 
-    
+    async function executarRequisicao(){
+        try {
+            const dados = await axios.post(`https://mywallet-back-p4xq.onrender.com/login`, loginInputs)
+            return dados
+        } catch (erro) {
+            const mensagemDeErro = erro.response.data
+            setMensagemDeErro({"ativa": true, "erro": mensagemDeErro})
+            console.log("Erro ao efetuar login: ", erro.response)
+        }
+    }
+
+    async function subimissao(evento){
+        evento.preventDefault()
+        try{
+            const dados = await executarRequisicao()
+            console.log(dados?.data)
+        }catch(e){
+            console.log("Erro ao efetuar subimissão: ", e)
+        }
+    }
+
+   
+
     return (
-        // form
-        <TelaLogin onSubmit={async (e) => await subimissao(e)}>
+        <TelaLogin onSubmit={async (e) =>{const dados = await subimissao(e)}}>
 
             <h1>MyWallet</h1>
-            
-            {/* Caixas de input */}
+
             {Object.keys(loginInputs).map((titulo, indice) => renderInputs(titulo, indice))}
 
             <button type="submit" >Entrar</button>
+
+            {mensagemDeErro.ativa?<p>{mensagemDeErro["erro"]}</p>:<></>}
+
             <Link to="/cadastro">Primeira vez? Cadastre-se</Link>
 
         </TelaLogin>
-
     )
 }
 
