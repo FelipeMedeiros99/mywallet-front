@@ -3,47 +3,53 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 
 import { manipuladorDeInput } from "../../utils/ferramentas"
-import axios from "axios"
+import executarRequisicao from "../../utils/requisicoes"
 
-// TODO: CRIAR FUNÇÃO PARA O ONSUBMIT NÃO FICAR TAO FEIO
+
 // LEVAR PARA A PÁGINA PRINCIPAL CASO A ENTRADA SEJA VÁLIDA
 
-export default function Login({}){
-    const [loginInputs, setLoginInputs] = useState({"E-mail": "", "Senha": ""})
+/**
+ * Tela inicial de login
+ */
+export default function Login({ }) {
+    const [loginInputs, setLoginInputs] = useState({ "E-mail": "", "Senha": "" })
+    const indicesTipos = ['email', 'password']
+    const minimosRequeridos = ["7", "6"]
+
+    async function subimissao(evento){
+        evento.preventDefault()
+        const dados = await executarRequisicao("login", 'post', loginInputs, "Não foi possível efetuar login")
+        console.log(dados?.data)
+    }
+
+
+    function renderInputs(titulo, indice){
+        return(
+            <input
+                    key={titulo}
+                    type={indicesTipos[indice]}
+                    placeholder={titulo}
+                    required
+                    value={loginInputs[titulo]}
+                    minLength={minimosRequeridos[indice]}
+                    onChange={(evento) => manipuladorDeInput(evento, loginInputs, titulo, setLoginInputs)}
+            />
+        )
+    }
+
     
+    return (
+        // form
+        <TelaLogin onSubmit={async (e) => await subimissao(e)}>
 
-    return(
-        <TelaLogin onSubmit={async(e)=>{
-            e.preventDefault()
-            try{
-                console.log("estou aqui")
-                const dados = await axios.post("https://mywallet-back-p4xq.onrender.com/login", loginInputs)
-                console.log(dados.data)
-            }catch(erro){
-                console.log("Erro ao fazer login: ", erro)
-            }
-            }}>
             <h1>MyWallet</h1>
-            <input 
-                type="email" 
-                placeholder="E-mail"
-                required
-                value={loginInputs["E-mail"]}
-                onChange={(e)=> manipuladorDeInput(e, loginInputs, "E-mail", setLoginInputs)}                    
-            />
-
-            <input 
-                type="password" 
-                placeholder="Senha"
-                required
-                minLength="6"
-                value={loginInputs.Senha}
-                onChange={(e)=>manipuladorDeInput(e, loginInputs, "Senha", setLoginInputs)}
-            />
+            
+            {/* Caixas de input */}
+            {Object.keys(loginInputs).map((titulo, indice) => renderInputs(titulo, indice))}
 
             <button type="submit" >Entrar</button>
-
             <Link to="/cadastro">Primeira vez? Cadastre-se</Link>
+
         </TelaLogin>
 
     )
