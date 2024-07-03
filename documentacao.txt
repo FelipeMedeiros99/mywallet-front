@@ -1,0 +1,102 @@
+para cadastro, enviar um post para a rota "/cadastro" no formato:
+
+{
+    "Nome": "Fulano",
+    "E-mail": "fulano@gmail.com",
+    "Senha": "123456",
+    "Confirmar": "123456",
+}
+
+-----------------------------------------------------------------------------
+para login, enviar um post para a rota "/login" no formato:
+
+{ 
+    "E-mail": "fulano@gmail.com",
+    "Senha": "123456"
+}
+
+O usuário receberá uma response no formato:
+{
+  "_id": "667b3a44fd54a9c36ecfabc7",
+  "Nome": "Felipe",
+  "E-mail": "felipe@gmail.com",
+  "Saldo": -0.5,
+  "Entradas": [
+    {
+      "Descricao": "entrada de teste",
+      "Valor": 19.5,
+      "Data": "28/06/2024"
+    },
+    {
+      "Descricao": "entrada de teste",
+      "Valor": 100,
+      "Data": "29/06/2024"
+    }
+  ],
+  "Saidas": [
+    {
+      "Descricao": "entrada de teste",
+      "Valor": -40,
+      "Data": "29/06/2024"
+    },
+    {
+      "Descricao": "joguinho ",
+      "Valor": -80,
+      "Data": "29/06/2024"
+    }
+  ]
+}
+
+------------------------------------------------------------------------
+
+para fazer uma transação, o usuário deve fazer um post no formato: 
+
+{
+  "Descricao": "joguinho ",
+  "Valor": -80
+}
+
+o usuário terá uma response no formato: 
+{
+  "_id": "667b3a44fd54a9c36ecfabc7",
+  "Nome": "Felipe",
+  "E-mail": "felipe@gmail.com",
+  "Saldo": -240.5,
+  "Entradas": [
+    {
+      "Descricao": "entrada de teste",
+      "Valor": 19.5,
+      "Data": "28/06/2024"
+      "Id": 14554548487
+    }
+  ],
+  "Saidas": [
+    {
+      "Descricao": "entrada de teste",
+      "Valor": -40,
+      "Data": "29/06/2024",
+      "Id": 9874464168498
+    }
+  ]
+}
+
+------------------------------------------------------------------------------------------
+
+Para deletar uma transacao, deve enviar um "delete" para a rota "deletar" no formato:
+{
+    "Id": 2984298429
+}
+
+será enviado os dados atualizados para o usuário
+
+-------------------------------------------------------------------------------------------
+para editar os dados, deve ser enviado uma requisição put para /editar no formato:
+
+{
+  "Tipo": "Entradas",
+  "Descricao": "003",
+  "Valor": 100.0,
+  "Id": 1719713301711
+}
+
+será retornado os dados atualizados
