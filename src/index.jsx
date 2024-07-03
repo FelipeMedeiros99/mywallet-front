@@ -9,6 +9,7 @@ import Login from "./Components/Login"
 import { useState } from "react"
 import Cadastro from "./Components/Cadastro"
 import Home from "./Components/Home"
+import AdicionarEntrada from "./Components/AdicionarEntrada"
 
 // https://mywallet-back-p4xq.onrender.com
 
@@ -23,6 +24,7 @@ function App(){
           <Route path="/" element={<Login />}/> 
           <Route path="/cadastro" element={<Cadastro/>} />  
           <Route path="/home" element={<Home/>} />
+          <Route path="/nova-entrada" element={<AdicionarEntrada/>} />
         </Routes>
       </Router>
     </Contexto.Provider>

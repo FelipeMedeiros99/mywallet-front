@@ -40,7 +40,7 @@ export default function Home(){
                 {dadosUsuario?.Saidas?.map((dado, indice)=>renderizaTransacoes(dado, indice))}
                 {dadosUsuario?.Entradas?.map((dado, indice)=>renderizaTransacoes(dado, indice))}
                 {/* {console.log(dadosUsuario?.Saidas)} */}
-                {(dadosUsuario?.Saidas.length===0 && dadosUsuario?.Entradas.length===0)?"Não há registros de entrada ou saída":""}
+                {(dadosUsuario?.Saidas?.length===0 && dadosUsuario?.Entradas?.length===0)?"Não há registros de entrada ou saída":""}
                 <div className="saldo">
                     <p>Saldo: </p>
                     <p>{dadosUsuario.Saldo}</p>
