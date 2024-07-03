@@ -42,6 +42,7 @@ function manipuladorDeInput(evento, estado, chave, setEstado){
  * @param {string} titulo - Nome que aparece no placeholder e referencia o elemento do estado que será manipulado
  * @param {string} tipo - tipo de input: password, text, etc...
  * @param {string} minimoRequerido - valor de caracteres mínimos
+ * @param {boolean} isAtivo - ativa ou desativa o input
  * @param {Object} estado - objeto de estados que será manipulado
  * @param {Object} manipuladorEstado - setEstado, manipulador do estado
  * @returns 

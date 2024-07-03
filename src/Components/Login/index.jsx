@@ -87,11 +87,14 @@ export default function Login({ }) {
     return (
         <TelaLogin onSubmit={async (e) => { await subimissao(e) }}>
             <h1>MyWallet</h1>
+            {/* inputs da tela */}
             {Object.keys(loginInputs).map((titulo, indice) => (renderInputs(titulo, indicesTipos[indice], minimosRequeridos[indice], aguardandoRequisicao, loginInputs, setLoginInputs)))}
+            {/* botao */}
             {renderButton("submit", "Entrar", aguardandoRequisicao, ()=>{})}
+            {/* Mensagem de erro */}
             {mensagemDeErro.ativa ? <p>{mensagemDeErro["erro"]}</p> : <></>}
+            {/* Link para o cadastro */}
             <Link to="/cadastro">Primeira vez? Cadastre-se</Link>
-
         </TelaLogin>
     )
 }
