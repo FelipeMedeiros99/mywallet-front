@@ -12,10 +12,11 @@ import { useState } from "react"
 
 function App(){
   const [dadosUsuario, setDadosUsuario] = useState({})
-  const [headerUsuario, setHeaderUsuario] = useState({})
-
+  const [tokenUsuario, setTokenUsuario] = useState('')
+  console.log("dados usuario: ", dadosUsuario)
+  console.log("headers: ", tokenUsuario)
   return(
-    <Contexto.Provider value={{dadosUsuario, setDadosUsuario, headerUsuario, setHeaderUsuario}}>
+    <Contexto.Provider value={{dadosUsuario, setDadosUsuario, tokenUsuario, setTokenUsuario}}>
       <Router>        
         <Routes>
           <Route path="/" element={<Login />}/> 

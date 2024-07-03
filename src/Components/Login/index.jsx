@@ -1,11 +1,12 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import axios from "axios"
 
 import { manipuladorDeInput } from "../../utils/ferramentas"
+import { Contexto } from "../../Contexto"
 
-
+  
 // LEVAR PARA A PÁGINA PRINCIPAL CASO A ENTRADA SEJA VÁLIDA
 
 /**
@@ -17,6 +18,7 @@ export default function Login({ }) {
     const indicesTipos = ['email', 'password']
     const minimosRequeridos = ["7", "6"]
 
+    const {setDadosUsuario, setTokenUsuario} = useContext(Contexto)
 
     function renderInputs(titulo, indice){
         return(
@@ -47,13 +49,17 @@ export default function Login({ }) {
         evento.preventDefault()
         try{
             const dados = await executarRequisicao()
-            console.log(dados?.data)
+            const informacoesUsuario = dados?.data
+            
+            if(informacoesUsuario !== undefined){
+                setTokenUsuario(informacoesUsuario.token)
+                delete informacoesUsuario.token
+                setDadosUsuario(informacoesUsuario)
+            }
         }catch(e){
             console.log("Erro ao efetuar subimissão: ", e)
         }
     }
-
-   
 
     return (
         <TelaLogin onSubmit={async (e) =>{const dados = await subimissao(e)}}>
