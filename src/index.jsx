@@ -13,8 +13,8 @@ import { useState } from "react"
 function App(){
   const [dadosUsuario, setDadosUsuario] = useState({})
   const [tokenUsuario, setTokenUsuario] = useState('')
-  console.log("dados usuario: ", dadosUsuario)
-  console.log("headers: ", tokenUsuario)
+  console.log(dadosUsuario)
+  console.log(tokenUsuario)
   return(
     <Contexto.Provider value={{dadosUsuario, setDadosUsuario, tokenUsuario, setTokenUsuario}}>
       <Router>        
