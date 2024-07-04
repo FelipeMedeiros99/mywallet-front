@@ -24,7 +24,7 @@ export default function TelaTransacoes({tipo, objetoDeValores}){
     const minimosRequeridos = ["3", "1"];
     const {tokenUsuario, setDadosUsuario} = useContext(Contexto)
     const navigate = useNavigate()
-
+    let dados;
     // enviar dados para o servidor 
     async function enviarRequisicao(evento){
         evento.preventDefault();
@@ -33,7 +33,11 @@ export default function TelaTransacoes({tipo, objetoDeValores}){
             const headers = {Authorization: tokenUsuario}
 
             // manipulando o objeto de envio
-            const dados = {"Descricao": inputsTransacao['Descrição'], "Valor": parseFloat(inputsTransacao["Valor"].replace(",", "."))};
+            if(tipo==="Entrada"){
+                dados = {"Descricao": inputsTransacao['Descrição'], "Valor": parseFloat(inputsTransacao["Valor"].replace(",", "."))};
+            }else if(tipo==="Saida"){
+                dados = {"Descricao": inputsTransacao['Descrição'], "Valor": -parseFloat(inputsTransacao["Valor"].replace(",", "."))};
+            }
             // desativando inputs
             setAguardandoTransacao(true);
             // enviando requisição

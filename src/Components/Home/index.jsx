@@ -3,10 +3,11 @@ import { useContext, useEffect } from "react"
 import { Contexto } from "../../Contexto"
 import { useNavigate } from "react-router-dom"
 import { RxExit } from "react-icons/rx";
+import { IoCloseOutline } from "react-icons/io5";
 
 
 export default function Home(){
-    const {dadosUsuario} = useContext(Contexto)
+    const {dadosUsuario, setDadosUsuario, setTokenUsuario} = useContext(Contexto)
 
     // vars
     const navigate = useNavigate()
@@ -23,7 +24,8 @@ export default function Home(){
             <li key={indice}>
                 <span className="data">{dado?.Data}</span>
                 <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
-                <span className="valor">{`${parseFloat(dado?.Valor).toFixed(2)}R$`.replace('.', ',')}</span>
+                <span className="valor">{`${parseFloat(dado?.Valor)?.toFixed(2)}R$`.replace('.', ',')}</span>
+                <IoCloseOutline />
             </li>
         )
     }
@@ -32,7 +34,11 @@ export default function Home(){
         <Main>
             <div className="topo">
                 <h2>Olá {dadosUsuario.Nome}!</h2>
-                <RxExit />
+                <RxExit onClick={()=>{
+                    setDadosUsuario({})
+                    setTokenUsuario("")
+                    navigate('/')
+                    }}/>
             </div>
             <Transacoes>
                 {dadosUsuario?.Saidas?.map((dado, indice)=>renderizaTransacoes(dado, indice))}
@@ -41,7 +47,7 @@ export default function Home(){
                 {(dadosUsuario?.Saidas?.length===0 && dadosUsuario?.Entradas?.length===0)?"Não há registros de entrada ou saída":""}
                 <div className="saldo">
                     <p>Saldo: </p>
-                    <p>{`${dadosUsuario.Saldo.toFixed(2)}R$`.replace(".", ",")}</p>
+                    <p>{`${dadosUsuario.Saldo?.toFixed(2)}R$`.replace(".", ",")}</p>
                 </div>
             </Transacoes>
             <div className="botoes">
