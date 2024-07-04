@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
  * @param {Object} objetoDeValores - um objeto no formato {"Descrição": "", "Valor": 0}
  * @param {boolean} aguardandoTransacao - Desativa os inputs e botoes enquanto aguarda uma resposta
  */
-export default function TelaTransacoes({tipo, objetoDeValores}){
+export default function TelaTransacoes({tipo, objetoDeValores, editar=false}){
     // estados 
     const [inputsTransacao, setInputsTansacao] = useState(objetoDeValores);
     const [aguardandoTransacao, setAguardandoTransacao] = useState(false);
@@ -24,6 +24,7 @@ export default function TelaTransacoes({tipo, objetoDeValores}){
     const minimosRequeridos = ["3", "1"];
     const {tokenUsuario, setDadosUsuario} = useContext(Contexto)
     const navigate = useNavigate()
+    let resposta;
     let dados;
     // enviar dados para o servidor 
     async function enviarRequisicao(evento){
@@ -41,12 +42,15 @@ export default function TelaTransacoes({tipo, objetoDeValores}){
             // desativando inputs
             setAguardandoTransacao(true);
             // enviando requisição
-            const resposta = await axios.post("https://mywallet-back-p4xq.onrender.com/transacao", dados, {headers: headers});
-            // reativando inputs
-            setAguardandoTransacao(false)
+            if(!editar){
+               resposta = await axios.post("https://mywallet-back-p4xq.onrender.com/transacao", dados, {headers: headers});
+                // reativando inputs
+            }else{
+                resposta = await axios.put("https://mywallet-back-p4xq.onrender.com/editar", objetoDeValores, {headers: headers})
+            }
+                setAguardandoTransacao(false)
             if(resposta.status===201){
                 setDadosUsuario(resposta.data)
-                alert(`${tipo} adicionada com sucesso`)
                 navigate('/home')
             }
         }catch(e){

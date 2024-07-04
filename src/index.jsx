@@ -11,6 +11,7 @@ import Cadastro from "./Components/Cadastro"
 import Home from "./Components/Home"
 import AdicionarEntrada from "./Components/AdicionarEntrada"
 import AdicionarSaida from "./Components/AdicionarSaida"
+import EditarEntrada from "./Components/EditarEntrada"
 
 // https://mywallet-back-p4xq.onrender.com
 
@@ -27,6 +28,8 @@ function App(){
           <Route path="/home" element={<Home/>} />
           <Route path="/nova-entrada" element={<AdicionarEntrada/>} />
           <Route path="nova-saida" element={<AdicionarSaida/>} />
+          <Route path="editar-entrada" element={<EditarEntrada/>} />
+          
         </Routes>
       </Router>
     </Contexto.Provider>
