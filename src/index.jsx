@@ -16,7 +16,7 @@ import AdicionarEntrada from "./Components/AdicionarEntrada"
 function App(){
   const [dadosUsuario, setDadosUsuario] = useState({})
   const [tokenUsuario, setTokenUsuario] = useState('')
-  
+  console.log(dadosUsuario)
   return(
     <Contexto.Provider value={{dadosUsuario, setDadosUsuario, tokenUsuario, setTokenUsuario}}>
       <Router>        

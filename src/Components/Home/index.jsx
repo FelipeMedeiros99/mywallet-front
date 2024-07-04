@@ -8,8 +8,6 @@ import { RxExit } from "react-icons/rx";
 export default function Home(){
     const {dadosUsuario} = useContext(Contexto)
 
-    console.log(dadosUsuario)
-    
     // vars
     const navigate = useNavigate()
 
@@ -25,7 +23,7 @@ export default function Home(){
             <li key={indice}>
                 <span className="data">{dado?.Data}</span>
                 <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
-                <span className="valor">{parseFloat(dado?.Valor).toFixed(2)}</span>
+                <span className="valor">{`${parseFloat(dado?.Valor).toFixed(2)}R$`.replace('.', ',')}</span>
             </li>
         )
     }
@@ -43,7 +41,7 @@ export default function Home(){
                 {(dadosUsuario?.Saidas?.length===0 && dadosUsuario?.Entradas?.length===0)?"Não há registros de entrada ou saída":""}
                 <div className="saldo">
                     <p>Saldo: </p>
-                    <p>{dadosUsuario.Saldo}</p>
+                    <p>{`${dadosUsuario.Saldo.toFixed(2)}R$`.replace(".", ",")}</p>
                 </div>
             </Transacoes>
             <div className="botoes">

@@ -7,9 +7,6 @@ import { PulseLoader } from "react-spinners"
 import { renderInputs, renderButton } from "../../utils/ferramentas"
 import { Contexto } from "../../Contexto"
 
-
-// TODO: DESATIVAR BOTÃO E INPUTS AO EFETUAR UMA REQUISIÇÃO E ADICIONAR EFEITO DE CARREGAMENTO
-
 /**
  * Tela inicial de login
  */
