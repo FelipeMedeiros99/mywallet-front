@@ -85,4 +85,5 @@ export default function TelaTransacoes({tipo, objetoDeValores, Id="", editar=fal
 const Transacao = styled.form`
     display: flex;
     flex-direction: column;
+    margin-top: 40px
 `
