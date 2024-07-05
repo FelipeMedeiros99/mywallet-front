@@ -6,80 +6,86 @@ import { IoCloseOutline } from "react-icons/io5";
 import axios from "axios";
 
 import { Contexto } from "../../Contexto"
-import EditarEntrada from "../EditarEntrada";
 
-export default function Home(){
-    const {dadosUsuario, setDadosUsuario, setTokenUsuario, tokenUsuario} = useContext(Contexto)
+
+export default function Home() {
+    const { dadosUsuario, setDadosUsuario, setTokenUsuario, tokenUsuario, setEditarTransacao } = useContext(Contexto)
     console.log(tokenUsuario)
 
     // vars
     const navigate = useNavigate()
 
     // voltando para a página inicial caso os dados sejam perdidos
-    useEffect(()=>{
-        if(dadosUsuario.Nome === undefined){
+    useEffect(() => {
+        if (dadosUsuario.Nome === undefined) {
             navigate("/")
         }
     }, [])
 
-    async function deletarTransacao(id){
-        try{
-            const promessa = await axios.delete("https://mywallet-back-p4xq.onrender.com/deletar", 
-                {headers: {Authorization: tokenUsuario},
-                 data: {Id: id}
-                })   
+    async function deletarTransacao(id) {
+        try {
+            const promessa = await axios.delete("https://mywallet-back-p4xq.onrender.com/deletar",
+                {
+                    headers: { Authorization: tokenUsuario },
+                    data: { Id: id }
+                })
 
             console.log("resposta servidor: ", promessa)
             setDadosUsuario(promessa.data)
-        }catch(e){
+        } catch (e) {
             console.log("erro ao deletar transacao: ", e.response)
         }
     }
 
-    function editarTransacao(dado){
-        if(dado?.Valor > 0){
-            dado.Tipo= "Entradas"
-        }else{
+    function editarTransacao(dado) {
+        if (dado?.Valor > 0) {
+            dado.Tipo = "Entradas"
+        } else {
             dado.Tipo = "Saidas"
         }
-        navigate("/editar-entrada")
+        setEditarTransacao(dado)
+        navigate("/editar-transacao")
     }
 
-    function renderizaTransacoes(dado, indice){
-        return(
-            <li key={indice} onClick={()=>editarTransacao(dado)}>
-                <span className="data">{dado?.Data}</span>
-                <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
-                <span className="valor">{`${parseFloat(dado?.Valor)?.toFixed(2)}R$`.replace('.', ',')}</span>
-                <IoCloseOutline onClick={async ()=>deletarTransacao(dado.Id)}/>
-            </li>
+    function renderizaTransacoes(dado, indice) {
+        return (
+        
+                <li key={indice} >
+                    <div className="container-span" onClick={()=>editarTransacao(dado)}>
+                        <span className="data">{dado?.Data}</span>
+                        <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
+                        <span className="valor">{`${parseFloat(dado?.Valor)?.toFixed(2)}R$`.replace('.', ',')}</span>
+                    </div>
+                    <IoCloseOutline onClick={async ()=>deletarTransacao(dado.Id)}/>
+                </li>
+
         )
     }
 
 
-    return(
+    return (
         <Main>
             <div className="topo">
                 <h2>Olá {dadosUsuario.Nome}!</h2>
-                <RxExit onClick={()=>{
+                <RxExit onClick={() => {
                     setDadosUsuario({})
                     setTokenUsuario("")
                     navigate('/')
-                    }}/>
+                }} />
             </div>
             <Transacoes>
-                {dadosUsuario?.Saidas?.map((dado, indice)=>renderizaTransacoes(dado, indice))}
-                {dadosUsuario?.Entradas?.map((dado, indice)=>renderizaTransacoes(dado, indice))}
+                {dadosUsuario?.Saidas?.map((dado, indice) => renderizaTransacoes(dado, indice))}
+                {dadosUsuario?.Entradas?.map((dado, indice) => renderizaTransacoes(dado, indice))}
                 {/* {console.log(dadosUsuario?.Saidas)} */}
-                {(dadosUsuario?.Saidas?.length===0 && dadosUsuario?.Entradas?.length===0)?"Não há registros de entrada ou saída":""}
+                {(dadosUsuario?.Saidas?.length === 0 && dadosUsuario?.Entradas?.length === 0) ? "Não há registros de entrada ou saída" : ""}
                 <div className="saldo">
                     <p>Saldo: </p>
                     <p>{`${dadosUsuario.Saldo?.toFixed(2)}R$`.replace(".", ",")}</p>
                 </div>
             </Transacoes>
             <div className="botoes">
-                <button onClick={()=>navigate("/nova-entrada")}>Nova entrada</button>
-                <button onClick={()=>navigate("/nova-saida")}>Nova saída</button>
+                <button onClick={() => navigate("/nova-entrada")}>Nova entrada</button>
+                <button onClick={() => navigate("/nova-saida")}>Nova saída</button>
             </div>
 
         </Main>

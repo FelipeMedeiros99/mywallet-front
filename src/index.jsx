@@ -11,16 +11,17 @@ import Cadastro from "./Components/Cadastro"
 import Home from "./Components/Home"
 import AdicionarEntrada from "./Components/AdicionarEntrada"
 import AdicionarSaida from "./Components/AdicionarSaida"
-import EditarEntrada from "./Components/EditarEntrada"
+import EditarTransacao from "./Components/EditarTransacao"
 
 // https://mywallet-back-p4xq.onrender.com
 
 function App(){
   const [dadosUsuario, setDadosUsuario] = useState({})
   const [tokenUsuario, setTokenUsuario] = useState('')
+  const [editarTransacao, setEditarTransacao] = useState({})
   console.log(dadosUsuario)
   return(
-    <Contexto.Provider value={{dadosUsuario, setDadosUsuario, tokenUsuario, setTokenUsuario}}>
+    <Contexto.Provider value={{dadosUsuario, setDadosUsuario, tokenUsuario, setTokenUsuario, editarTransacao, setEditarTransacao}}>
       <Router>        
         <Routes>
           <Route path="/" element={<Login />}/> 
@@ -28,7 +29,7 @@ function App(){
           <Route path="/home" element={<Home/>} />
           <Route path="/nova-entrada" element={<AdicionarEntrada/>} />
           <Route path="nova-saida" element={<AdicionarSaida/>} />
-          <Route path="editar-entrada" element={<EditarEntrada/>} />
+          <Route path="editar-transacao" element={<EditarTransacao/>} />
           
         </Routes>
       </Router>
