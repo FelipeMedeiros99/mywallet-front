@@ -79,3 +79,10 @@ export function renderButton(tipo, texto, ativo, funcao){
         </button>
         );
 }
+
+export function atualizaSaldo(dadosUsuario){
+        let Saldo = 0
+        dadosUsuario.Entradas?.map((entrada)=>Saldo += parseFloat(entrada.Valor))
+        dadosUsuario.Saidas?.map((entrada)=>Saldo -= parseFloat(entrada.Valor))
+        return Saldo
+}

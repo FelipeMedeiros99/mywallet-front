@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState, useContext } from "react"
 import axios from "axios"
 
-import { renderInputs, renderButton } from "../../utils/ferramentas"
+import { renderInputs, renderButton, atualizaSaldo } from "../../utils/ferramentas"
 import { Contexto } from "../../Contexto"
 import { EstiloTelaLoginCadastro } from "../../assets/EstiloTelaLoginCadastro"
 
@@ -66,8 +66,10 @@ export default function Login({ }) {
                 // salvando token
                 setTokenUsuario(`Bearer ${informacoesUsuario.token}`)
                 delete informacoesUsuario.token
+                // atualizando saldo
+                let Saldo = atualizaSaldo(informacoesUsuario)
                 // salvando dados
-                setDadosUsuario(informacoesUsuario)
+                setDadosUsuario({...informacoesUsuario, Saldo})
                 // desativando mensagem de erro, se existir
                 setMensagemDeErro({ ...mensagemDeErro, ativa: false })
                 // Enviando usuário para a tela principal

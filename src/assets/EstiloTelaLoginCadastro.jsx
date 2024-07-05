@@ -11,5 +11,6 @@ export const EstiloTelaLoginCadastro = styled.form`
         font-size: 15px;
         color: white;
         text-decoration: none;
+        margin-top: 36px;
     }
 `

@@ -16,6 +16,10 @@ input, button{
     font-size: 25px;
 }
 
+button:hover, input:hover{
+    cursor: pointer;
+} 
+
 button{
     background-color: #A328D6;
     color: white;

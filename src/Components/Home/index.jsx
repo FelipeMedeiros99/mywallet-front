@@ -6,11 +6,11 @@ import { IoCloseOutline } from "react-icons/io5";
 import axios from "axios";
 
 import { Contexto } from "../../Contexto"
+import { atualizaSaldo } from "../../utils/ferramentas";
 
 
 export default function Home() {
     const { dadosUsuario, setDadosUsuario, setTokenUsuario, tokenUsuario, setEditarTransacao } = useContext(Contexto)
-    console.log(tokenUsuario)
 
     // vars
     const navigate = useNavigate()
@@ -21,6 +21,14 @@ export default function Home() {
             navigate("/")
         }
     }, [])
+
+    useEffect(()=>{
+        const Saldo = atualizaSaldo(dadosUsuario)
+        setDadosUsuario({...dadosUsuario, Saldo: Saldo})
+    }, [])
+
+
+
 
     async function deletarTransacao(id) {
         try {
@@ -62,7 +70,7 @@ export default function Home() {
         )
     }
 
-
+    console.log("dados usuario: ", dadosUsuario)
     return (
         <Main>
             <div className="topo">
