@@ -2,4 +2,37 @@ body, html, .root{
     width: 100%;
     height: 100%;
     background-color: #8c11be;
+    font-family: "Raleway", sans-serif;
+}
+
+input, button{
+    height: 58px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 2px;
+    margin-bottom: 13px;
+    width: 100%;
+    max-width: 326px;
+    font-size: 25px;
+}
+
+button{
+    background-color: #A328D6;
+    color: white;
+}
+
+input::placeholder{
+    font-size: 26px;
+    color: black;
+}
+
+h1{
+  font-family: "Saira Stencil One", sans-serif;
+  font-size: 32px;
+  color: white;
+  margin-bottom: 25px;
+}
+
+h2{
+    font-size: 26px;
 }

@@ -1,9 +1,9 @@
 import { useState } from "react"
-import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 import { renderInputs, renderButton } from "../../utils/ferramentas"
-import axios from "axios"
+import { EstiloTelaLoginCadastro } from "../../assets/EstiloTelaLoginCadastro"
 
 
 export default function Cadastro(){
@@ -67,7 +67,7 @@ export default function Cadastro(){
 
 
     return(
-        <TelaCadastro onSubmit={submissao}>
+        <EstiloTelaLoginCadastro onSubmit={submissao}>
             <h1>MyWallet</h1>
             {Object.keys(inputsCadastro).map((titulo, indice)=>(
                 renderInputs(titulo, tiposInputs[indice], minimosRequeridos[indice], aguardandoResposta, inputsCadastro, setInputsCadastro)
@@ -79,11 +79,6 @@ export default function Cadastro(){
 
             <Link to="/" >Já possui uma conta? Entre agora!</Link>
 
-        </TelaCadastro>
+        </EstiloTelaLoginCadastro>
     )
 }
-
-const TelaCadastro = styled.form`
-    display: flex;
-    flex-direction: column;
-`

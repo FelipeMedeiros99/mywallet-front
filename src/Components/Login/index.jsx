@@ -1,11 +1,10 @@
-import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom"
 import { useState, useContext } from "react"
 import axios from "axios"
-import { PulseLoader } from "react-spinners"
 
 import { renderInputs, renderButton } from "../../utils/ferramentas"
 import { Contexto } from "../../Contexto"
+import { EstiloTelaLoginCadastro } from "../../assets/EstiloTelaLoginCadastro"
 
 /**
  * Tela inicial de login
@@ -82,7 +81,7 @@ export default function Login({ }) {
     }
 
     return (
-        <TelaLogin onSubmit={async (e) => { await subimissao(e) }}>
+        <EstiloTelaLoginCadastro onSubmit={async (e) => { await subimissao(e) }}>
             <h1>MyWallet</h1>
             {/* inputs da tela */}
             {Object.keys(loginInputs).map((titulo, indice) => (renderInputs(titulo, indicesTipos[indice], minimosRequeridos[indice], aguardandoRequisicao, loginInputs, setLoginInputs)))}
@@ -92,12 +91,6 @@ export default function Login({ }) {
             {mensagemDeErro.ativa ? <p>{mensagemDeErro["erro"]}</p> : <></>}
             {/* Link para o cadastro */}
             <Link to="/cadastro">Primeira vez? Cadastre-se</Link>
-        </TelaLogin>
+        </EstiloTelaLoginCadastro>
     )
 }
-
-
-const TelaLogin = styled.form`
-    display: flex;
-    flex-direction: column;
-` 
