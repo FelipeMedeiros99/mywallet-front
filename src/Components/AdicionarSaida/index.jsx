@@ -1,17 +1,14 @@
-import styled from "styled-components"
 import TelaTransacoes from "../TelaTransacoes"
+import EstiloTelaTransacao from "../../assets/EstiloTelaTransacao"
 
 export default function AdicionarSaida(){
     
     return(
-        <TelaSaida>
-            <h2>Nova entrada</h2>
+        <EstiloTelaTransacao>
+            <h2>Nova saida</h2>
             <TelaTransacoes tipo={"Saida"} objetoDeValores={{"Descrição": "", "Valor":""}}></TelaTransacoes>
-        </TelaSaida>  
+        </EstiloTelaTransacao>
             
     )
 
 }
-
-const TelaSaida = styled.div`
-`

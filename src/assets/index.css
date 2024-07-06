@@ -20,9 +20,12 @@ input, button{
     font-size: 25px;
 }
 
-button:hover, input:hover{
+button:hover{
     cursor: pointer;
 } 
+input:hover{
+    cursor: text;
+}
 
 button{
     background-color: #A328D6;

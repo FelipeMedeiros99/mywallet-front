@@ -31,6 +31,7 @@ export default function Home() {
 
 
     async function deletarTransacao(id) {
+        console.log("clicou")
         try {
             const promessa = await axios.delete("https://mywallet-back-p4xq.onrender.com/deletar",
                 {
@@ -62,9 +63,11 @@ export default function Home() {
                 <div className="container-span" onClick={() => editarTransacao(dado)}>
                     <span className="data">{dado?.Data}</span>
                     <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
-                    <span className="valor">{`${parseFloat(dado?.Valor)?.toFixed(2)}R$`.replace('.', ',')}</span>
+                    <span className={dado.Valor<0?"saida valor": "entrada valor"}>{`${Math.abs(parseFloat(dado?.Valor))?.toFixed(2)}R$`.replace('.', ',')}</span>
                 </div>
-                <IoCloseOutline onClick={async () => deletarTransacao(dado.Id)} />
+                <IoCloseOutline className="remover" onClick={async () => deletarTransacao(dado.Id)}
+                    size={"16"}
+                    />
             </li>
 
         )
@@ -79,16 +82,17 @@ export default function Home() {
                     setDadosUsuario({})
                     setTokenUsuario("")
                     navigate('/')
-                }} />
+                }}
+                />
             </div>
             <Transacoes>
                 {dadosUsuario?.Saidas?.map((dado, indice) => renderizaTransacoes(dado, indice))}
                 {dadosUsuario?.Entradas?.map((dado, indice) => renderizaTransacoes(dado, indice))}
                 {/* {console.log(dadosUsuario?.Saidas)} */}
                 {dadosUsuario?.Entradas?.length > 0 || dadosUsuario?.Saidas?.length > 0 ?
-                    <div className="saldo">
-                        <p>Saldo: </p>
-                        <p>{`${dadosUsuario.Saldo?.toFixed(2)}R$`.replace(".", ",")}</p>
+                    <div className="container-saldo">
+                        <p className="saldo">SALDO: </p>
+                        <p className={dadosUsuario.Saldo<0?"saida valor": "entrada valor"}>{`${dadosUsuario.Saldo?.toFixed(2)}R$`.replace(".", ",")}</p>
                     </div>
                     : <div className="aviso"><p>Não há registros de entrada ou saída</p></div>
                 }
@@ -111,7 +115,6 @@ const Main = styled.main`
     height: 100%;
     position: relative;
     .topo{
-        height: 55px;
         position: absolute;
         top: 0;
         display: flex;
@@ -160,17 +163,81 @@ const Transacoes = styled.ul`
         margin-bottom: 140px;
         background-color: white;
         border-radius: 5px;
+        padding: 23px 12px 40px 12px;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
 
     li{
-
+        position: relative;
         display: flex;
         width: 100%;
         justify-content: space-between;
+        height: 40px;
+        align-items: center;
+
     }
 
-    .saldo{
+    li:hover{
+        cursor: pointer;
+        background-color: #ebebeb;
+    }
+
+    .container-saldo{
         display: flex;
+        width: 90%;
+        max-width: 300px;
         justify-content: space-between;
+        bottom: 10px;
+        font-size: 17px;
+        position: absolute;
+        bottom: 10px
+    }
+    
+    .saldo{
+        font-weight: 700;
+    }
+
+    span{
+        font-size: 16px;
+    }
+
+    .saida{
+        color: #C70000;
+    }
+
+    .entrada{
+        color: #03AC00;
+    }
+
+    .data{
+        margin-right: 5px;
+        color: #C6C6C6;
+    }
+
+    .valor{
+        position: absolute;
+        right: 15px;
+        text-align: center;
+    }
+
+    .descricao{
+        font-weight: 400;
+        max-width: 30px;
+    }
+
+    .remover{
+        
+        color: #C6C6C6;
+        height: 100%;
+    }
+
+    .remover:hover{
+        color: red;
+        background-color: #aaaaaa;
+        height: 100%;
+        width: 20px;
+        /* height: 0px; */
     }
 
 `

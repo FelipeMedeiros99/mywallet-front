@@ -22,6 +22,7 @@ export default function TelaTransacoes({tipo, objetoDeValores, Id="", editar=fal
     const chaves = Object.keys(inputsTransacao);
     const tipos = ["text", "text"];
     const minimosRequeridos = ["3", "1"];
+    const max = [null, '15']
     const {tokenUsuario, setDadosUsuario} = useContext(Contexto)
     const navigate = useNavigate()
     let resposta;
@@ -70,7 +71,6 @@ export default function TelaTransacoes({tipo, objetoDeValores, Id="", editar=fal
         }
     };
 
-    console.log("Objeto de valore: ", objetoDeValores)
 
     return(
         <Transacao onSubmit={enviarRequisicao}>

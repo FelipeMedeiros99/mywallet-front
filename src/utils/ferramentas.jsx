@@ -47,7 +47,7 @@ function manipuladorDeInput(evento, estado, chave, setEstado){
  * @param {Object} manipuladorEstado - setEstado, manipulador do estado
  * @returns 
  */
-export function renderInputs(titulo, tipo, minimoRequerido, isAtivo, estado, manipuladorEstado) {
+export function renderInputs(titulo, tipo, minimoRequerido, isAtivo, estado, manipuladorEstado, max=null) {
         return (
             <input
                 key={titulo}
@@ -58,6 +58,7 @@ export function renderInputs(titulo, tipo, minimoRequerido, isAtivo, estado, man
                 minLength={minimoRequerido}
                 onChange={(evento) => manipuladorDeInput(evento, estado, titulo, manipuladorEstado)}
                 disabled={isAtivo}
+                maxLength={max}
             />
             );
     };
