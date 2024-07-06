@@ -15,6 +15,8 @@ import EditarTransacao from "./Components/EditarTransacao"
 
 // https://mywallet-back-p4xq.onrender.com
 
+// TODO: LIMPAR E MELHORAR O CÓDIGO
+
 function App(){
   const [dadosUsuario, setDadosUsuario] = useState({})
   const [tokenUsuario, setTokenUsuario] = useState('')

@@ -63,8 +63,8 @@ export default function Home() {
                 <div className="container-span" onClick={() => editarTransacao(dado)}>
                     <span className="data">{dado?.Data}</span>
                     <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
-                    <span className={dado.Valor<0?"saida valor": "entrada valor"}>{`${Math.abs(parseFloat(dado?.Valor))?.toFixed(2)}R$`.replace('.', ',')}</span>
                 </div>
+                    <span className={dado.Valor<0?"saida valor": "entrada valor"}>{`${Math.abs(parseFloat(dado?.Valor))?.toFixed(2)}R$`.replace('.', ',')}</span>
                 <IoCloseOutline className="remover" onClick={async () => deletarTransacao(dado.Id)}
                     size={"16"}
                     />
@@ -78,7 +78,7 @@ export default function Home() {
         <Main>
             <div className="topo">
                 <h2>Olá {dadosUsuario.Nome}!</h2>
-                <RxExit onClick={() => {
+                <RxExit className="sair" onClick={() => {
                     setDadosUsuario({})
                     setTokenUsuario("")
                     navigate('/')
@@ -119,8 +119,20 @@ const Main = styled.main`
         top: 0;
         display: flex;
         width: 100%;
-        max-width: 326px;
+        max-width: 500px;
         justify-content: space-between ;
+    }
+
+    .sair{
+        width: 30px;
+        height: 30px;
+    }
+
+    .sair:hover{
+        cursor: pointer;
+        width: 35px;
+        height: 35px;
+        
     }
 
     .botoes{
@@ -129,7 +141,7 @@ const Main = styled.main`
         display: flex;
         justify-content: space-between;
         width: 100%;
-        max-width: 326px;
+        max-width: 500px;
     }
 
     .entrada{
@@ -143,7 +155,7 @@ const Main = styled.main`
     button{
         width: 100%;
         height: 114px;
-        max-width: 155px;
+        max-width: 250px;
     }
 
     .aviso{
@@ -158,7 +170,7 @@ const Main = styled.main`
 const Transacoes = styled.ul`
         width: 100%;
         height: 100%;
-        max-width: 326px;
+        max-width: 500px;
         margin-top: 35px;
         margin-bottom: 140px;
         background-color: white;
@@ -167,6 +179,7 @@ const Transacoes = styled.ul`
         position: relative;
         overflow-y: auto;
         overflow-x: hidden;
+        width: 100%;
 
     li{
         position: relative;
@@ -183,10 +196,14 @@ const Transacoes = styled.ul`
         background-color: #ebebeb;
     }
 
+    .container-span{
+        width: 100%;
+    }
+
     .container-saldo{
         display: flex;
-        width: 90%;
-        max-width: 300px;
+        width: 95%;
+        max-width: 500px;
         justify-content: space-between;
         bottom: 10px;
         font-size: 17px;
@@ -216,14 +233,15 @@ const Transacoes = styled.ul`
     }
 
     .valor{
-        position: absolute;
-        right: 15px;
-        text-align: center;
+        text-align: end;
+        justify-content: flex-end;
+        margin-right: 5px;
     }
 
     .descricao{
+        display: inline-block;
         font-weight: 400;
-        max-width: 30px;
+        word-wrap: wrap;
     }
 
     .remover{

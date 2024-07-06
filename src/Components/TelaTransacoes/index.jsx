@@ -22,7 +22,7 @@ export default function TelaTransacoes({tipo, objetoDeValores, Id="", editar=fal
     const chaves = Object.keys(inputsTransacao);
     const tipos = ["text", "text"];
     const minimosRequeridos = ["3", "1"];
-    const max = [null, '15']
+    const max = ['15', null]
     const {tokenUsuario, setDadosUsuario} = useContext(Contexto)
     const navigate = useNavigate()
     let resposta;
