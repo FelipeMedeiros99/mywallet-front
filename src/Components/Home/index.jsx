@@ -127,6 +127,7 @@ const Main = styled.main`
     .sair{
         width: 30px;
         height: 30px;
+        color: white;
     }
 
     .sair:hover{
