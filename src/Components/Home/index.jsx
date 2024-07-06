@@ -5,103 +5,159 @@ import { RxExit } from "react-icons/rx";
 import { IoCloseOutline } from "react-icons/io5";
 import axios from "axios";
 
-import { Contexto } from "../../Contexto"
+import { Contexto } from "../../Contexto";
 import { atualizaSaldo } from "../../utils/ferramentas";
 
 
 export default function Home() {
-    const { dadosUsuario, setDadosUsuario, setTokenUsuario, tokenUsuario, setEditarTransacao } = useContext(Contexto)
 
-    // vars
-    const navigate = useNavigate()
+    // ===================== vars ===============================
+    const navigate = useNavigate();
+    const { 
+        dadosUsuario, 
+        setDadosUsuario,
+        setTokenUsuario, 
+        tokenUsuario, 
+        setEditarTransacao 
+    } = useContext(Contexto);
 
-    // voltando para a página inicial caso os dados sejam perdidos
+    
+    // ==================== hooks ===============================
+
+    // indo para tela inicial se a tela recarregar
     useEffect(() => {
         if (dadosUsuario.Nome === undefined) {
-            navigate("/")
+            navigate("/");
         }
-    }, [])
+    }, []);
 
+    // atualização de saldo
     useEffect(() => {
-        const Saldo = atualizaSaldo(dadosUsuario)
-        setDadosUsuario({ ...dadosUsuario, Saldo: Saldo })
-    }, [])
+        const Saldo = atualizaSaldo(dadosUsuario);
+        setDadosUsuario({ ...dadosUsuario, Saldo: Saldo });
+    }, []);
 
 
-
-
+    // ====================== functions =========================
+    
+    /**
+     * apaga dados do servidor
+     * @param {int} id - id da transação que será deletado
+     */
     async function deletarTransacao(id) {
-        console.log("clicou")
         try {
-            const promessa = await axios.delete("https://mywallet-back-p4xq.onrender.com/deletar",
-                {
-                    headers: { Authorization: tokenUsuario },
-                    data: { Id: id }
-                })
-
-            console.log("resposta servidor: ", promessa)
-            setDadosUsuario(promessa.data)
+            // cabeçalho de envio
+            const cabecalho = {
+                headers: { Authorization: tokenUsuario },
+                data: { Id: id }
+            };
+            // requisição
+            const promessa = await axios.delete("https://mywallet-back-p4xq.onrender.com/deletar", cabecalho);
+            // atualizando dados no front
+            setDadosUsuario(promessa.data);
 
         } catch (e) {
-            console.log("erro ao deletar transacao: ", e.response)
-        }
-    }
+            console.log("erro ao deletar transacao: ", e?.response||e);
+        };
+    };
 
+    /**
+     * Editar transação
+     * @param {Object} dado - Objeto de dados do usuário
+     */
     function editarTransacao(dado) {
+        // definindo o tipo de transação
+
+        dado.Tipo = "Saidas";
         if (dado?.Valor > 0) {
-            dado.Tipo = "Entradas"
-        } else {
-            dado.Tipo = "Saidas"
+            dado.Tipo = "Entradas";
         }
-        setEditarTransacao(dado)
-        navigate("/editar-transacao")
-    }
+        // armazenando dados da transação que será editado
+        setEditarTransacao(dado);
+        navigate("/editar-transacao");
+    };
 
-    function renderizaTransacoes(dado, indice) {
-        return (
 
-            <li key={indice} >
-                <div className="container-span" onClick={() => editarTransacao(dado)}>
-                    <span className="data">{dado?.Data}</span>
-                    <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
-                </div>
-                    <span className={dado.Valor<0?"saida valor": "entrada valor"}>{`${Math.abs(parseFloat(dado?.Valor))?.toFixed(2)}R$`.replace('.', ',')}</span>
-                <IoCloseOutline className="remover" onClick={async () => deletarTransacao(dado.Id)}
-                    size={"16"}
-                    />
-            </li>
+    // ================= Componentes da tela =====================
 
+    function Topo(){
+        return(
+            <div className="topo">
+                <h2>Olá {dadosUsuario.Nome}!</h2>
+                <IconeSair/>
+            </div>
         )
     }
 
-    console.log("dados usuario: ", dadosUsuario)
+    function IconeSair(){
+        return(
+            <RxExit className="sair" onClick={() => {
+                setDadosUsuario({})
+                setTokenUsuario("")
+                navigate('/')
+            }}/>
+        )
+    }
+
+    function RenderizarTransacoes({dado, indice}){
+        return (
+            <li key={indice}>
+                {/* Renderizar as informações da transação  */}
+                <div className="container-span" onClick={() =>editarTransacao(dado)}>
+                    <span className="data">{dado?.Data}</span>
+                    <span className="descricao">{`${dado?.Descricao}`.trim()}</span>
+                </div>
+                <span className={dado?.Valor<0?"saida valor": "entrada valor"}>{`${Math.abs(parseFloat(dado?.Valor))?.toFixed(2)}R$`?.replace('.', ',')}</span>
+                
+                {/* icone para deletar transação */}
+                <IoCloseOutline 
+                    className="remover" 
+                    onClick={async () => deletarTransacao(dado.Id)}
+                    size={"16"}/>
+            </li>
+        )
+    }
+
+    function Transacoes(){
+        return(
+            <>
+                {dadosUsuario?.Saidas?.map((dado, indice) => <RenderizarTransacoes dado={dado} indice={indice} />)}
+                {dadosUsuario?.Entradas?.map((dado, indice) => <RenderizarTransacoes dado={dado} indice={indice} />)}
+               
+            </>
+        )
+    }
+
+    function Saldo(){
+        return(    
+        dadosUsuario?.Entradas?.length > 0 || dadosUsuario?.Saidas?.length > 0 ?(
+            <div className="container-saldo">
+                <p className="saldo">SALDO: </p>
+                <p className={dadosUsuario.Saldo<0?"saida valor": "entrada valor"}>{`${dadosUsuario.Saldo?.toFixed(2)}R$`.replace(".", ",")}</p>
+            </div>
+            ):(
+                <div className="aviso"><p>Não há registros de entrada ou saída</p></div>
+            )       
+        )
+    }
+
+    function Botoes(){
+        return(
+            <div className="botoes">
+                <button onClick={() => navigate("/nova-entrada")} className="botao-entrada">Nova entrada</button>
+                <button onClick={() => navigate("/nova-saida")} className="botao-saida">Nova saída</button>
+            </div>
+        )
+    }
+
     return (
         <Main>
-            <div className="topo">
-                <h2>Olá {dadosUsuario.Nome}!</h2>
-                <RxExit className="sair" onClick={() => {
-                    setDadosUsuario({})
-                    setTokenUsuario("")
-                    navigate('/')
-                }}
-                />
-            </div>
-            <Transacoes>
-                {dadosUsuario?.Saidas?.map((dado, indice) => renderizaTransacoes(dado, indice))}
-                {dadosUsuario?.Entradas?.map((dado, indice) => renderizaTransacoes(dado, indice))}
-                {/* {console.log(dadosUsuario?.Saidas)} */}
-                {dadosUsuario?.Entradas?.length > 0 || dadosUsuario?.Saidas?.length > 0 ?
-                    <div className="container-saldo">
-                        <p className="saldo">SALDO: </p>
-                        <p className={dadosUsuario.Saldo<0?"saida valor": "entrada valor"}>{`${dadosUsuario.Saldo?.toFixed(2)}R$`.replace(".", ",")}</p>
-                    </div>
-                    : <div className="aviso"><p>Não há registros de entrada ou saída</p></div>
-                }
-            </Transacoes>
-            <div className="botoes">
-                <button onClick={() => navigate("/nova-entrada")} className="entrada">Nova entrada</button>
-                <button onClick={() => navigate("/nova-saida")} className="saida">Nova saída</button>
-            </div>
+            <Topo/>
+            <TelaTransacoes>
+                 <Transacoes/>
+            </TelaTransacoes>
+            <Saldo />
+            <Botoes />
 
         </Main>
     )
@@ -115,6 +171,15 @@ const Main = styled.main`
     width: 100%;
     height: 100%;
     position: relative;
+
+    .saida{
+        color: #C70000;
+    }
+
+    .entrada{
+        color: #03AC00;
+    }
+
     .topo{
         position: absolute;
         top: 0;
@@ -146,11 +211,11 @@ const Main = styled.main`
         max-width: 500px;
     }
 
-    .entrada{
+    .botao-entrada{
         margin-right: 5px;
     }
 
-    .saida{
+    .botao-saida{
         margin-left: 5px;
     }
 
@@ -167,9 +232,30 @@ const Main = styled.main`
         align-items: center;
         justify-content: center;
     }
+
+    .container-saldo{
+        display: flex;
+        width: 100%;
+        padding: 0 15px 0 15px;
+        height: 40px;
+        max-width: 500px;
+        justify-content: space-between;
+        align-items: center;
+        bottom: 10px;
+        font-size: 17px;
+        position: absolute;
+        bottom: 140px;
+        z-index: 2;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    .saldo{
+        font-weight: 700;
+    }
 `
 
-const Transacoes = styled.ul`
+const TelaTransacoes = styled.ul`
         width: 100%;
         height: 100%;
         max-width: 500px;
@@ -177,7 +263,7 @@ const Transacoes = styled.ul`
         margin-bottom: 140px;
         background-color: white;
         border-radius: 5px;
-        padding: 23px 12px 40px 12px;
+        padding: 23px 12px 50px 12px;
         position: relative;
         overflow-y: auto;
         overflow-x: hidden;
@@ -202,31 +288,8 @@ const Transacoes = styled.ul`
         width: 100%;
     }
 
-    .container-saldo{
-        display: flex;
-        width: 95%;
-        max-width: 500px;
-        justify-content: space-between;
-        bottom: 10px;
-        font-size: 17px;
-        position: absolute;
-        bottom: 10px
-    }
-    
-    .saldo{
-        font-weight: 700;
-    }
-
     span{
         font-size: 16px;
-    }
-
-    .saida{
-        color: #C70000;
-    }
-
-    .entrada{
-        color: #03AC00;
     }
 
     .data{

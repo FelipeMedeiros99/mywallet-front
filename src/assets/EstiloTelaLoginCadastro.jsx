@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 export const EstiloTelaLoginCadastro = styled.form`
+
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -12,5 +13,9 @@ export const EstiloTelaLoginCadastro = styled.form`
         color: white;
         text-decoration: none;
         margin-top: 36px;
+    }
+
+    .erro{
+        color: #ffe500;
     }
 `
