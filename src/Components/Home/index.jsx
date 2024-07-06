@@ -41,6 +41,7 @@ export default function Home() {
 
             console.log("resposta servidor: ", promessa)
             setDadosUsuario(promessa.data)
+
         } catch (e) {
             console.log("erro ao deletar transacao: ", e.response)
         }
