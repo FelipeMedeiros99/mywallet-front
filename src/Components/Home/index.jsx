@@ -249,7 +249,7 @@ const Main = styled.main`
         background-color: white;
         border-radius: 5px;
     }
-
+    
     .saldo{
         font-weight: 700;
     }

@@ -8,7 +8,15 @@ export default function AdicionarEntrada(){
         <EstiloTelaTransacao>
 
             <h2>Nova entrada</h2>
-            <TelaTransacoes tipo={"Entrada"} objetoDeValores={{"Descrição": "", "Valor":""}}></TelaTransacoes>
+            <TelaTransacoes 
+                tipo={"Entrada"} 
+                objetoDeValores={
+                    {
+                        "Descrição": "", 
+                        "Valor":""
+                    }
+                }> 
+            </TelaTransacoes>
         
         </EstiloTelaTransacao>
             

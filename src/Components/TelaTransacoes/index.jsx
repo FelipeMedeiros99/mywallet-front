@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import axios from "axios"
 
-import { renderButton, renderInputs } from "../../utils/ferramentas";
+import { renderButton, RenderInputs } from "../../utils/ferramentas";
 import { Contexto } from "../../Contexto"
 import { useNavigate } from "react-router-dom";
 
@@ -74,7 +74,15 @@ export default function TelaTransacoes({tipo, objetoDeValores, Id="", editar=fal
 
     return(
         <Transacao onSubmit={enviarRequisicao}>
-            {chaves.map((titulo, indice) =>(renderInputs(titulo, tipos[indice], minimosRequeridos[indice], aguardandoTransacao, inputsTransacao, setInputsTansacao)))}
+            {chaves.map((titulo, indice) =>(
+                <RenderInputs
+                    titulo={titulo}
+                    tipo={tipos[indice]}
+                    minimoRequerido={minimosRequeridos[indice]}
+                    isAtivo={aguardandoTransacao}
+                    estado={inputsTransacao}
+                    manipuladorEstado={setInputsTansacao} />
+                ))}
             {renderButton('submit', `Salvar ${tipo}`, aguardandoTransacao, ()=>{})}
             {mensagemErro.ativo?<p>{mensagemErro.mensagem}</p>:<></>}
         </Transacao>

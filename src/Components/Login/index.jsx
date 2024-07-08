@@ -2,26 +2,26 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import axios from "axios";
 
-import { renderInputs, renderButton, atualizaSaldo } from "../../utils/ferramentas";
+import { RenderInputs, renderButton, atualizaSaldo } from "../../utils/ferramentas";
 import { Contexto } from "../../Contexto";
 import { EstiloTelaLoginCadastro } from "../../assets/EstiloTelaLoginCadastro";
 
 
 export default function Login({ }) {
-    // estados
+    // ================ estados =====================
     const [loginInputs, setLoginInputs] = useState({ "E-mail": "", "Senha": "" });
     const [mensagemDeErro, setMensagemDeErro] = useState({ 'ativa': false, 'erro': "" });
-    const [aguardandoRequisicao, setAguardandoRequisicao] = useState(false);
+    const [aguardandoResposta, setAguardandoResposta] = useState(false);
 
-    // vars
-    const indicesTipos = ['email', 'password'];
+    // ================= vars ========================
+    const tiposInputs = ['email', 'password'];
     const minimosRequeridos = ["7", "6"];
     const navigate = useNavigate();
 
-    // variáveis globais
+    // ============= variáveis globais ===================
     const { setDadosUsuario, setTokenUsuario } = useContext(Contexto);
 
-    // funções
+    // ================== funções =========================
 
     /**
      * Realiza a requisição de login para o servidor
@@ -30,17 +30,17 @@ export default function Login({ }) {
     async function executarRequisicao() {
         try {
             // desativando inputs
-            setAguardandoRequisicao(true);
+            setAguardandoResposta(true);
             // enviando requisição
             const dados = await axios.post(`https://mywallet-back-p4xq.onrender.com/login`, loginInputs);
             // reativando input
-            setAguardandoRequisicao(false);
+            setAguardandoResposta(false);
             // Retornando os dados 
             return dados;
         
         } catch (erro) {
             // reativando input em caso de erro
-            setAguardandoRequisicao(false);
+            setAguardandoResposta(false);
             // controle de erros
             const mensagemDeErro = erro?.response?.data || erro;
             setMensagemDeErro({ "ativa": true, "erro": mensagemDeErro});
@@ -81,29 +81,34 @@ export default function Login({ }) {
         }
     }
 
+    // =================== Componentes =======================
+
+    function Botoes(){
+        return(
+            renderButton("submit", "Entrar", aguardandoResposta, ()=>{})
+        )
+    }
+
+    function MensagemErro(){
+        return(
+            mensagemDeErro.ativa ? <p className="erro">{mensagemDeErro["erro"]}</p> : <></>
+        )
+    }
+    
     return (
         <EstiloTelaLoginCadastro onSubmit={(e)=>subimissao(e)}>
             <h1>MyWallet</h1>
-            
-            {/* inputs da tela */}
-            {Object.keys(loginInputs).map((titulo, indice) => (
-                renderInputs(
-                            titulo, 
-                            indicesTipos[indice], 
-                            minimosRequeridos[indice], 
-                            aguardandoRequisicao, 
-                            loginInputs, 
-                            setLoginInputs)))}
-            
-            {/* botao */}
-            {renderButton("submit", "Entrar", aguardandoRequisicao, ()=>{})}
-            
-            {/* Mensagem de erro */}
-            {mensagemDeErro.ativa ? <p className="erro">{mensagemDeErro["erro"]}</p> : <></>}
-            
-            {/* Link para o cadastro */}
+            {Object.keys(loginInputs).map((titulo, indice)=>(
+            <RenderInputs 
+                titulo={titulo} 
+                tipo={tiposInputs[indice]} 
+                minimoRequerido={minimosRequeridos[indice]} 
+                isAtivo={aguardandoResposta} 
+                estado={loginInputs}
+                manipuladorEstado={setLoginInputs}/>))}
+            <Botoes />
+            <MensagemErro />            
             <Link to="/cadastro">Primeira vez? Cadastre-se</Link>
-
         </EstiloTelaLoginCadastro>
     )
 }

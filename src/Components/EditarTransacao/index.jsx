@@ -13,7 +13,18 @@ export default function EditarTransacao(){
     return(
         <EstiloTelaTransacao>
             <h2>Editar {Valor>=0?"Entrada":"Saída"}</h2>
-            <TelaTransacoes tipo={tipo} objetoDeValores={{Descricao: Descricao, "Valor": Math.abs(Valor), Id: Id, Tipo: tipo}} editar={true}></TelaTransacoes>
+            <TelaTransacoes 
+                tipo={tipo} 
+                objetoDeValores={
+                    {
+                        Descricao: Descricao, 
+                        "Valor": Math.abs(Valor), 
+                        Id: Id, 
+                        Tipo: tipo
+                    }
+                } 
+                editar={true}>
+            </TelaTransacoes>
         </EstiloTelaTransacao>
             
     )

@@ -2,23 +2,23 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { renderInputs, renderButton } from "../../utils/ferramentas";
+import { RenderInputs, renderButton } from "../../utils/ferramentas";
 import { EstiloTelaLoginCadastro } from "../../assets/EstiloTelaLoginCadastro";
 
 
 export default function Cadastro(){
     
-    // estados
+    // ================ estados ===================
     const [inputsCadastro, setInputsCadastro] = useState({"Nome": "", "E-mail": "", "Senha": "", "Confirme a senha": ""});
     const [aguardandoResposta, setAguardandoResposta] = useState(false);
     const [erroRecebido, setErroRecebido] = useState({'ativo': false, "mensagem": ""});
     
-    // vars
+    // ================== vars ====================
     const tiposInputs = ["text", "email", "password", "password"];
     const minimosRequeridos = ["2", "6", "6", "6"];
     const navigate = useNavigate();
 
-    // funções 
+    // ================= funções ==================
     async function enviarRequisicao(){
         try{
             // organizando os dados
@@ -58,25 +58,35 @@ export default function Cadastro(){
         await enviarRequisicao();
     }
 
+    // ================= Componentes ===============
+
+    function Botoes(){
+        return(
+            renderButton("submit", "Cadastrar", aguardandoResposta, ()=>{})
+        )
+    }
+
+    function MensagemErro(){
+        return(
+            erroRecebido.ativo?<p>{erroRecebido.mensagem}</p>:<></>
+        )
+    }
+
 
     return(
         <EstiloTelaLoginCadastro onSubmit={submissao}>
             <h1>MyWallet</h1>
-
             {Object.keys(inputsCadastro).map((titulo, indice)=>(
-                renderInputs(
-                    titulo, 
-                    tiposInputs[indice], 
-                    minimosRequeridos[indice], 
-                    aguardandoResposta, 
-                    inputsCadastro, 
-                    setInputsCadastro)
-            ))}
-            
-            {renderButton("submit", "Cadastrar", aguardandoResposta, ()=>{})}
-
-            {erroRecebido.ativo?<p>{erroRecebido.mensagem}</p>:<></>}
-
+            <RenderInputs 
+                titulo={titulo} 
+                tipo={tiposInputs[indice]} 
+                minimoRequerido={minimosRequeridos[indice]} 
+                isAtivo={aguardandoResposta} 
+                estado={inputsCadastro}
+                manipuladorEstado={setInputsCadastro}
+            />))}
+            <Botoes />
+            <MensagemErro />
             <Link to="/" >Já possui uma conta? Entre agora!</Link>
 
         </EstiloTelaLoginCadastro>
