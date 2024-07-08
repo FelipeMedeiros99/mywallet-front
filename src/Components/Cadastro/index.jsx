@@ -78,6 +78,7 @@ export default function Cadastro(){
             <h1>MyWallet</h1>
             {Object.keys(inputsCadastro).map((titulo, indice)=>(
             <RenderInputs 
+                key={indice}
                 titulo={titulo} 
                 tipo={tiposInputs[indice]} 
                 minimoRequerido={minimosRequeridos[indice]} 

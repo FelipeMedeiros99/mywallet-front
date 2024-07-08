@@ -22,14 +22,12 @@ export default function TelaTransacoes({tipo, objetoDeValores, Id="", editar=fal
     const chaves = Object.keys(inputsTransacao);
     const tipos = ["text", "text"];
     const minimosRequeridos = ["3", "1"];
-    const max = ['15', null]
     const {tokenUsuario, setDadosUsuario} = useContext(Contexto)
     const navigate = useNavigate()
     let resposta;
     let dados;
     // enviar dados para o servidor 
     async function enviarRequisicao(evento){
-        console.log("inputs Transacao: ", inputsTransacao)
         evento.preventDefault();
         try{
             // Manipulando o cabeçalho

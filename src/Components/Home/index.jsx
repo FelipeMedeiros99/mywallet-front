@@ -29,13 +29,13 @@ export default function Home() {
         if (dadosUsuario.Nome === undefined) {
             navigate("/");
         }
-    }, []);
+    }, [dadosUsuario.Nome, navigate]);
 
     // atualização de saldo
     useEffect(() => {
         const Saldo = atualizaSaldo(dadosUsuario);
         setDadosUsuario({ ...dadosUsuario, Saldo: Saldo });
-    }, []);
+    }, [dadosUsuario, setDadosUsuario]);
 
 
     // ====================== functions =========================
@@ -121,8 +121,8 @@ export default function Home() {
     function Transacoes(){
         return(
             <>
-                {dadosUsuario?.Saidas?.map((dado, indice) => <RenderizarTransacoes dado={dado} indice={indice} />)}
-                {dadosUsuario?.Entradas?.map((dado, indice) => <RenderizarTransacoes dado={dado} indice={indice} />)}
+                {dadosUsuario?.Saidas?.map((dado, indice) => <RenderizarTransacoes key={indice} dado={dado} indice={indice} />)}
+                {dadosUsuario?.Entradas?.map((dado, indice) => <RenderizarTransacoes key={indice} dado={dado} indice={indice} />)}
                
             </>
         )

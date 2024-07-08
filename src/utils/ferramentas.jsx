@@ -22,7 +22,7 @@ function manipuladorDeInput(evento, estado, chave, setEstado){
  * @param {Object} manipuladorEstado - setEstado, manipulador do estado
  * @returns 
  */
-export function RenderInputs({titulo, tipo, minimoRequerido, isAtivo, estado, manipuladorEstado, max=null}) {
+export function RenderInputs({titulo, tipo, minimoRequerido, isAtivo, estado, manipuladorEstado}) {
         return (
             <input
                 key={titulo}
@@ -33,7 +33,6 @@ export function RenderInputs({titulo, tipo, minimoRequerido, isAtivo, estado, ma
                 minLength={minimoRequerido}
                 onChange={(evento) => manipuladorDeInput(evento, estado, titulo, manipuladorEstado)}
                 disabled={isAtivo}
-                maxLength={max}
             />
             );
     };
@@ -63,8 +62,7 @@ export function renderButton(tipo, texto, ativo, funcao){
  */
 export function atualizaSaldo(dadosUsuario){
         let Saldo = 0
-        dadosUsuario.Entradas?.map((entrada)=>{Saldo += parseFloat(entrada.Valor)})
-        dadosUsuario.Saidas?.map((saida)=> {Saldo +=parseFloat(saida.Valor)})
-        console.log("saldo: ", Saldo)
+        dadosUsuario.Entradas?.forEach((entrada)=>{Saldo += parseFloat(entrada.Valor)})
+        dadosUsuario.Saidas?.forEach((saida)=> {Saldo +=parseFloat(saida.Valor)})
         return Saldo
 }

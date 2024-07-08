@@ -100,6 +100,7 @@ export default function Login({ }) {
             <h1>MyWallet</h1>
             {Object.keys(loginInputs).map((titulo, indice)=>(
             <RenderInputs 
+                key={indice}
                 titulo={titulo} 
                 tipo={tiposInputs[indice]} 
                 minimoRequerido={minimosRequeridos[indice]} 
